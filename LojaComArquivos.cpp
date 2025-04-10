@@ -10,7 +10,7 @@ float precos[] = {0.0, 1.50, 1.00, 0.50, 1.25, 3.00, 3.50, 3.50};
 float ProdutosTamanho[] = {0.0, 0.5, 0.6, 0.4, 0.7, 0.9, 1.5, 2};
 
 void carregarProgresso(float &cred, int stockArray[], float &mochila) {
-    std::ifstream arquivo("progresso.txt");
+    std::ifstream arquivo("C:\\Users\\utilizador\\Documents\\MeuJogoDaLojinha\\ProgressoDoJogo.txt");
 
     if (arquivo.is_open()) {
         arquivo >> cred;
@@ -29,7 +29,7 @@ void carregarProgresso(float &cred, int stockArray[], float &mochila) {
 }
 
 void salvarProgresso(float cred, int stockArray[], float mochila) {
-    std::ofstream arquivo("progresso.txt");
+    std::ofstream arquivo("C:\\Users\\utilizador\\Documents\\MeuJogoDaLojinha\\ProgressoDoJogo.txt");
 
     if (arquivo.is_open()) {
         arquivo << cred << "\n";  
@@ -197,7 +197,9 @@ int main() {
     float cred = 1000.00;
     int stockArray[8] = {0, 3, 5, 10, 4, 20, 10, 10};
     float mochila = 15;
-
+    
+    carregarProgresso(cred, stockArray, mochila);
+    
     while (true) {
         MenuDeCompra(cred, stockArray, mochila);
         cout << "Escolhe uma das opcoes pelo Numero acima: ";
