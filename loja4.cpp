@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -14,8 +15,6 @@ int xp = 0;
 int Nivel = 1;
 
 void SubirDeNivel(int XpPorProduto, int opc, int &Nivel, int xp){
-    cout << "Estas Nivel " << Nivel << "!" << endl;
-    cout << "Compra mais coisas para ganhares mais nivel! " << endl;
     if(xp >= 10){
         Nivel++;
         cout << "Subiste de Nivel estas " << Nivel << "! " << endl;
@@ -90,7 +89,8 @@ void resetarProgresso() {
 }
 
 void MenuDeCompra(float cred, int stockArray[], float mochila) {
-    cout << "*************************************************" << endl;
+
+cout << "*************************************************" << endl;
 cout << "*          Bem-vindo a Lojinha do Blud!         *" << endl;
 cout << "*         Aqui nos vendemos so o basico!        *" << endl;
 cout << "*************************************************" << endl;
@@ -142,14 +142,14 @@ cout << "* Digite 0 para sair da loja.                   *" << endl;
 cout << "*************************************************" << endl;
 }
 
-void compra(int opc, float &cred, int stockArray[], float &mochila, int &cupoes, int &Nivel, int &xp,int XpPorProduto[]) {
+void compra(int opc, float &cred, int stockArray[], float &mochila, int &cupoes, int &Nivel, int &xp, int XpPorProduto[]) {
     char decisao;
     char decisaoDesconto;
     int produtos;
     char trabalho;
     float precoOriginal = precos[opc];
-    float Desconto = static_cast<float>(rand()) / RAND_MAX * 0.50; 
-    float precosDesconto = precoOriginal * (1.00 - Desconto);
+    float Desconto = static_cast<float>(rand()) / RAND_MAX * 0.50; // Calculando o desconto aleatório
+    float precosDesconto = precoOriginal * (1.00 - Desconto); // Aplicando o desconto ao preço original
 
     if (opc < 1 || opc > 7) {
         Limpar();
@@ -189,7 +189,6 @@ void compra(int opc, float &cred, int stockArray[], float &mochila, int &cupoes,
         }
     }
 
-float Descontototal = produtos * precosDesconto;
     while (true) {
         cout << "\nQuantas unidades queres comprar? ";
         cin >> produtos;
@@ -197,42 +196,18 @@ float Descontototal = produtos * precosDesconto;
         
         if(TotalTamanho > mochila){
             do{
-            cout << "Nao tens espaco na mochila suficiente. Tens " << mochila << " espacos.\n";
-            cout << "Queres trabalhar para ganhar mais espaco? (s/n): ";
-            cin >> trabalho;
-            if (trabalho == 's' || trabalho == 'S') {
-                int ganhoEspaco = rand() % 4 + 1;
-                mochila += ganhoEspaco;
-                cout << "Ganhaste +" << ganhoEspaco << " espacos na mochila! Agora tens " << mochila << " livres.\n";
-            } else {
-                cout << "Volta quando tiveres espaco na mochila.\n";
-                return;
-            }
-        } while(TotalTamanho >= mochila);
-    }
-
-        if(produtos >= 3){
-            cout << "Queres utilizar um cupom de desconto?(s/n)" << endl;
-            cin >> decisaoDesconto;
-            if(decisaoDesconto == 's' || decisaoDesconto == 'S'){
-                cupoes--;
-                Desconto;
-                Descontototal;
-                if(cupoes == 0){
-                    cout << "Os teus Cupoes acabaram " << endl;
+                cout << "Nao tens espaco na mochila suficiente. Tens " << mochila << " espacos.\n";
+                cout << "Queres trabalhar para ganhar mais espaco? (s/n): ";
+                cin >> trabalho;
+                if (trabalho == 's' || trabalho == 'S') {
+                    int ganhoEspaco = rand() % 4 + 1;
+                    mochila += ganhoEspaco;
+                    cout << "Ganhaste +" << ganhoEspaco << " espacos na mochila! Agora tens " << mochila << " livres.\n";
+                } else {
+                    cout << "Volta quando tiveres espaco na mochila.\n";
+                    return;
                 }
-                cout << "Utilizaste 1 dos teus cupoes! " << endl;
-                cout << "Cupoes Restantes " << "(" << cupoes << "/3)" << endl;
-            } else {
-                break;
-            }
-        }
-
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(1000, '\n');
-            cout << "Entrada invalida! Digita um numero.\n";
-            continue;
+            } while(TotalTamanho >= mochila);
         }
 
         if (produtos <= 0) {
@@ -245,24 +220,25 @@ float Descontototal = produtos * precosDesconto;
             continue;
         }
 
-        if (produtos > mochila) {
-            cout << "Nao tens espaco na mochila suficiente. Tens " << mochila << " espacos.\n";
-            cout << "Queres trabalhar para ganhar mais espaco? (s/n): ";
-            cin >> trabalho;
+        float total = produtos * precoOriginal;  
 
-        if (trabalho == 's' || trabalho == 'S') {
-            int ganhoEspaco = rand() % 4 + 1;
-            mochila += ganhoEspaco;
-            cout << "Ganhaste +" << ganhoEspaco << " espacos na mochila! Agora tens " << mochila << " livres.\n";
-        } else {
-            cout << "Volta quando tiveres espaco na mochila.\n";
-            return;
+        
+        if (produtos >= 3) {
+            cout << "Queres utilizar um cupom de desconto?(s/n)" << endl;
+            cin >> decisaoDesconto;
+            if (decisaoDesconto == 's' || decisaoDesconto == 'S') {
+                if (cupoes > 0) {
+                    cupoes--;
+                    total = produtos * precosDesconto;  
+                    cout << "Utilizaste 1 dos teus cupoes! " << endl;
+                    cout << "Cupoes Restantes (" << cupoes << "/3)" << endl;
+                    cout << "Desconto aplicado: " << (precoOriginal - precosDesconto) * produtos << endl;
+                    cout << "Preço total com desconto: $" << total << endl;
+                } else {
+                    cout << "Você não tem mais cupons de desconto disponíveis." << endl;
+                }
+            }
         }
-
-        }
-
-        float Descontototal = produtos * precosDesconto;
-        float total = produtos * precos[opc];
 
         if (cred < total) {
             cout << "Nao tens saldo suficiente. Precisas de $" << total << ", tens apenas $" << cred << ".\n";
@@ -351,4 +327,3 @@ int main() {
 
     return 0;
 }
-
